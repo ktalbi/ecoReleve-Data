@@ -28,14 +28,19 @@ def current_user(request):
     """Return the list of all the users with their ids.
     """
     session = request.dbsession
-
+    print('******************** current user **********')
+    print(request.authenticated_userid['iss'])
+    print('********************')
     query = select([
         User.id.label('PK_id'),
         User.Login.label('fullname'),
         User.Firstname.label('Firstname'),
-        User.Lastname.label('Lastname')
+        User.Lastname.label('Lastname'),
+        User.Language.label('Language')
     ]).where(User.id == request.authenticated_userid['iss'])
-    return dict(session.execute(query).fetchone())
+    res = dict(session.execute(query).fetchone())
+    print(res)
+    return res
 
 @view_config(
     route_name='users/id',

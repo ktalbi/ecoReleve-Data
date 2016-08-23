@@ -50,10 +50,14 @@ define(['jquery', 'marionette', 'backbone', 'config', 'controller'],
       '*route(/:page)': 'home',
     },
 
-    execute: function(callback, args) {
+    execute: function(callback, args) { 
+      window.app.logged = false;
       $.ajax({
         context: this,
-        url: config.coreUrl + 'security/has_access'
+        url: config.coreUrl + 'security/has_access',
+        success : function(){
+           window.app.logged = true;
+        }
       }).done(function() {
         callback.apply(this, args);
       }).fail(function(msg) {

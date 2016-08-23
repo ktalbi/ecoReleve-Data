@@ -31,13 +31,18 @@ function(Marionette, config, Breadcrumb) {
 
     onShow: function() {
       var _this = this;
-      var user  = new Backbone.Model();
-      user.url = config.coreUrl + 'currentUser';
-      user.fetch({
-        success: function(md) {
-           _this.ui.userName.html(user.get('Firstname') + ' ' + user.get('Lastname') );
-        }
-      });
+      var m = 0;
+      if(window.app.logged) {
+        this.getUser();
+      } else {
+          var func_rep = window.setInterval(function(){ 
+            if(window.app.logged){
+              _this.getUser();
+              window.clearInterval(func_rep);
+            } 
+        }, 50);
+      }
+      this.$el.i18n();
     },
     pipefyform : function(e){
       // check id div is not integrated add it
@@ -67,6 +72,18 @@ function(Marionette, config, Breadcrumb) {
       } else {
         this.closeform();
       }
+    },
+    getUser : function(){
+      var _this = this;
+      var user  = new Backbone.Model();
+      user.url = config.coreUrl + 'currentUser';
+      user.fetch({
+        success: function(md) {
+           _this.ui.userName.html(user.get('Firstname') + ' ' + user.get('Lastname') );
+           //_this.$el.i18n();
+        }
+      });
+
     }
   });
 });

@@ -8,11 +8,18 @@ define(['marionette','config','i18n'], function(Marionette, config) {
     },
 
     initi18n: function() {
-      i18n.init({
-        resGetPath: this.url,
-        getAsync: true,
-        lng: config.language || 'en' //navigator.language || navigator.userLanguagenavigator.language || navigator.userLanguage
-      });
+      $.ajax({
+        context: this,
+        url: config.coreUrl + 'currentUser',
+        success : function(data){
+          var language = data.Language;
+          i18n.init({
+                resGetPath: this.url,
+                getAsync: true,
+                lng: language || 'en'//navigator.language || navigator.userLanguagenavigator.language || navigator.userLanguage
+              });
+        }
+      })
     },
 
     getValueFromKey: function(key) {

@@ -9,7 +9,10 @@
 		"validation" : "Validate",
 		"data" : "My data",
 		"stations" : "Stations",
-		"objects" : "Objects"
+		"objects" : "Objects",
+		"new-station" :"New station",
+		"sensors" :"Sensors",
+		"release" :"Release"
 	},
 	"header" : {
 
@@ -30,8 +33,11 @@
 		"delete" : "Delete",
 		"addObserver" : "Add an observer",
 		"removeObserver" : "Remove an observer",
-		"geolocation" : "Get current position"
-
+		"geolocation" : "Get current position",
+		"grid" :"grid",
+		"map" : "map",
+		"logout" : "logout",
+		"back" : "Back"
 	},
 	"shared" : {
 		"fieldworker" : "fieldworker",
@@ -97,7 +103,7 @@
 			"step1GPXLabel" : "Data",
 			"step2GPXLabel" : "Details",
 			"step3GPXLabel" : "Metadata"
-		},
+			},
 		"gpxHelp" : "GPX, or GPS eXchange Format is an XML schema designed as a common GPS data format. It can be used to describe waypoints, tracks, and routes.",
 		"fileSelection" : "select a file*",
 		"fileSelectionMsg" : "Please select a file exported from your GPS in GPX format.",
@@ -117,7 +123,28 @@
 		"ImportingDataAlert" : "Importing data",
 		"loadingDataAlert" : "Loading data error",
 		"importingDataWarning" : "Selected waypoint(s) are already imported",
-		"importServerError" : "Error sending gpx data to the server."
+		"importServerError" : "Error sending gpx data to the server.",
+		"gpx" :"gpx file",
+		"rfid" : "rfid file",
+		"gsm" : "gsm files",
+		"argos" : "argos files",
+		"label-selected" :"selected data"
+	},
+	"home" : {
+		"hello" : "Hello",
+		"graph-label" : "Number of new stations"
+	},
+	"stations" : {
+			"search" :"Search",
+			"all-tab" : "All stations",
+			"imported-tab" : "Imported stations",
+			"coords-tab" : "With coordinates",
+			"no-coords-tab" : "Without coordinates",
+			"total-label" : "Stations total :",
+			"new-station-btn" :"New station",
+			"export-btn" :"Export data"
+	},
+	"sensors" : {
+			"new" : "New sensor"
 	}
-
 }

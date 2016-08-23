@@ -64,7 +64,7 @@ define([
         this.display(this.model);
         //this.feedProtoList();
       }
-      //this.$el.i18n();
+      this.$el.i18n();
       //this.translater = Translater.getTranslater();
     },
 
