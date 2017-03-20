@@ -21,7 +21,8 @@ from ..Models import (
     Equipment,
     Sensor,
     SensorType,
-    MonitoredSite
+    MonitoredSite,
+    Project
 )
 from ..utils import Eval
 from collections import OrderedDict
@@ -603,3 +604,9 @@ class MonitoredSiteList(ListObjectWithDynProp):
                      ))
             fullQueryJoin = fullQueryJoin.where(exists(subSelect))
         return fullQueryJoin
+
+class ProjectList (ListObjectWithDynProp):
+        def __init__(self, frontModule, typeObj=None, startDate=None,
+                 history=False, historyView=None):
+            print(' projects list ')
+            super().__init__(Project, frontModule, startDate)

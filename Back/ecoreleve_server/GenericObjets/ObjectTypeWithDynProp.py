@@ -72,31 +72,3 @@ class ObjectTypeWithDynProp:
             str(self.ID)
         Values = self.ObjContext.execute(curQuery).fetchall()
         return Values
-
-    def GetFieldSets(self, FrontModules, Schema):
-        ''' return ordered FiledSet according to configuration '''
-        resultat = []
-        Fields = self.ObjContext.query(ModuleForms
-                                       ).filter(
-            ModuleForms.Module_ID == FrontModules.ID
-        ).filter(
-            or_(ModuleForms.TypeObj == self.ID,
-                ModuleForms.TypeObj == None)).all()
-
-        Legends = sorted([(obj.Legend, obj.FormOrder, obj.Name)
-                          for obj in Fields if obj.FormOrder is not None], key=lambda x: x[1])
-        Unique_Legends = list()
-        # Get distinct Fieldset in correct order
-        for x in Legends:
-            if x[0] not in Unique_Legends:
-                Unique_Legends.append(x[0])
-
-        for curLegend in Unique_Legends:
-            curFieldSet = {'fields': [], 'legend': curLegend}
-            resultat.append(curFieldSet)
-
-        for curProp in Legends:
-            curIndex = Unique_Legends.index(curProp[0])
-            resultat[curIndex]['fields'].append(curProp[2])
-
-        return resultat

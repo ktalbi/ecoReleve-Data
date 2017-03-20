@@ -340,10 +340,11 @@ class DynamicObjectCollectionView(CustomView):
                                            ).first()
 
     def getForm(self, objectType=None, moduleName=None, mode='edit'):
-        if objectType is None:
+        if objectType is None and 'ObjectType' in self.request.params:
             objectType = self.request.params['ObjectType']
+            self.setType(int(objectType))
+
         Conf = self.getConf(moduleName)
-        self.setType(int(objectType))
         schema = self.objectDB.GetDTOWithSchema(Conf, mode)
         return schema
 

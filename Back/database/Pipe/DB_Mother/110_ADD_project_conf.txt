@@ -1,0 +1,9 @@
+  
+INSERT INTO [dbo].[FrontModules] (Name,TypeModule) VALUES ('ProjectForm',1), ('ProjectFilter',1)
+
+TODO : insert in ModuleForms + ModuleGrids + dynprop
+
+INSERT INTO [dbo].[TVersion] (TVer_FileName,TVer_Date,TVer_DbName) VALUES ('110_ADD_project_conf',GETDATE(),(SELECT db_name()))
+
+
+GO

@@ -167,6 +167,11 @@ context_permissions = {
     'release': [
                 (Allow, 'group:admins', ALL_PERMISSIONS),
               ],
+    'projects': [
+                (Allow, 'group:admins', ALL_PERMISSIONS),
+                (Allow, 'group:superUsers', ('create', 'update', 'read')),
+                (Allow, 'group:users', ('create', 'update', 'read'))
+    ]
 }
 
 
@@ -231,4 +236,10 @@ routes_permission = {
         'PUT': 'superUser',
         'DELETE': 'superUser'
     },
+    'projects': {
+        'GET': 'all',
+        'POST': 'all',
+        'PUT': 'all',
+        'DELETE': 'all'
+    }
 }

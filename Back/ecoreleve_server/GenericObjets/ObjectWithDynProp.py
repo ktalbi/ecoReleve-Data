@@ -37,7 +37,7 @@ class ObjectWithDynProp:
     def __init__(self, ObjContext=None):
         self.ObjContext = threadlocal.get_current_request().dbsession
         self.PropDynValuesOfNow = {}
-        self.GetAllProp()
+        # self.GetAllProp()
         self._constraintsFunctionLists = []
 
     @property
@@ -218,8 +218,8 @@ class ObjectWithDynProp:
                 self.PropDynValuesOfNow[nameProp] = valeur
             except:
                 pass
-        else:
-            if (nameProp.lower() in self.GetType().DynPropNames):
+        elif (self.GetType()):
+            if (self.GetType().DynPropNames and nameProp.lower() in self.GetType().DynPropNames):
                 if ((nameProp not in self.PropDynValuesOfNow
                      ) or (isEqual(self.PropDynValuesOfNow[nameProp], valeur) is False)):
                     # IF no value or different existing value, new value is
@@ -273,6 +273,8 @@ class ObjectWithDynProp:
         raise Exception("GetStartDate not implemented in children")
 
     def LoadNowValues(self):
+        if not self.GetType():
+            return
         curQuery = 'select V.*, P.Name,P.TypeProp from ' + self.GetDynPropValuesTable() + \
             ' V JOIN ' + self.GetDynPropTable() + \
             ' P ON P.' + self.GetDynPropValuesTableID() + '= V.' + \
@@ -354,7 +356,11 @@ class ObjectWithDynProp:
         ''' return schema of static props to feed front end form '''
         Editable = (DisplayMode.lower() == 'edit')
         resultat = {}
-        type_ = self.GetType().ID
+        if self.GetType():
+            type_ = self.GetType().ID
+        else :
+            type_ = None
+
         Fields = self.ObjContext.query(ModuleForms
                                        ).filter(
             and_(ModuleForms.Module_ID == FrontModules.ID,
@@ -378,14 +384,16 @@ class ObjectWithDynProp:
 
         schema = self.GetSchemaFromStaticProps(FrontModules, DisplayMode)
         ObjType = self.GetType()
-        ObjType.AddDynamicPropInSchemaDTO(schema, FrontModules, DisplayMode)
+
+        if ObjType:
+            ObjType.AddDynamicPropInSchemaDTO(schema, FrontModules, DisplayMode)
 
         resultat = {
             'schema': schema,
-            'fieldsets': ObjType.GetFieldSets(FrontModules, schema),
+            'fieldsets': self.GetFieldSets(FrontModules, schema),
             'grid': False
         }
-        if (ObjType.Status == 10):
+        if (ObjType and ObjType.Status == 10):
             resultat['grid'] = True
         return resultat
 
@@ -463,6 +471,40 @@ class ObjectWithDynProp:
                 session.close()
             except:
                 pass
+
+
+    def GetFieldSets(self, FrontModules, Schema):
+        ''' return ordered FiledSet according to configuration '''
+        if self.GetType():
+            type_ = self.GetType().ID
+        else : 
+            type_ = None
+
+        resultat = []
+        Fields = self.ObjContext.query(ModuleForms
+                                       ).filter(
+            ModuleForms.Module_ID == FrontModules.ID
+        ).filter(
+            or_(ModuleForms.TypeObj == type_,
+                ModuleForms.TypeObj == None)).all()
+
+        Legends = sorted([(obj.Legend, obj.FormOrder, obj.Name)
+                          for obj in Fields if obj.FormOrder is not None], key=lambda x: x[1])
+        Unique_Legends = list()
+        # Get distinct Fieldset in correct order
+        for x in Legends:
+            if x[0] not in Unique_Legends:
+                Unique_Legends.append(x[0])
+
+        for curLegend in Unique_Legends:
+            curFieldSet = {'fields': [], 'legend': curLegend}
+            resultat.append(curFieldSet)
+
+        for curProp in Legends:
+            curIndex = Unique_Legends.index(curProp[0])
+            resultat[curIndex]['fields'].append(curProp[2])
+
+        return resultat
 
     def splitFullPath(self, value):
         splitValue = value.split('>')[-1]

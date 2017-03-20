@@ -125,6 +125,7 @@ from .CustomTypes import *
 from .Protocoles import *
 from .User import User
 from .Station import *
+from .Project import *
 from .Region import *
 from .FieldActivity import *
 from .Individual import *
